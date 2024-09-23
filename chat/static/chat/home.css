@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+body {
+    font-family: 'YourFontName', sans-serif;  
+    background-color: black;
+    color: #4AF626;
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 400;
+}
