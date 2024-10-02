@@ -7,3 +7,12 @@ body {
     font-style: normal;
     font-weight: 400;
 }
+.batmanTalks {
+    font-family: 'YourFontName', sans-serif;  
+    background-color: black;
+    color: #4AF626;
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 400;
+    border: 0cap;
+}
