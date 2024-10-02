@@ -16,3 +16,11 @@ body {
     font-weight: 400;
     border: 0cap;
 }
+input {
+    border-color: black;
+    width: 80%;
+}
+input:focus {
+    border-color: black;
+    outline: none;
+}

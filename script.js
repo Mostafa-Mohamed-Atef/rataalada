@@ -3,6 +3,9 @@ var j = 0;
 var txt = ['<?> what is black and blue and DEAD all over?', "<?> YOU"];
 var speed = 100;
 
+// prompt = getElementById("batmanTalking")
+
+
 function typeWriter() {
   if (j < txt.length) {
     if (i < txt[j].length) {
