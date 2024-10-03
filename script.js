@@ -35,13 +35,18 @@ function startChat() {
 startChat();
 
 // Event listener for user input
-document.getElementById('batmanTalks').addEventListener('input', function() { // Changed 'change' to 'input'
-  var userInput = this.value; // Get user input
-  displayUserInput(userInput); // Display user input in the terminal
-  this.value = ''; // Clear the input field
-  setTimeout(() => {
-    generateBatmanResponse(userInput); // Generate Batman response based on user input
-  }, 500); // Simulate thinking time
+// Event listener for user input
+document.getElementById('batmanTalks').addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') { // Check if Enter key is pressed
+    var userInput = this.value.trim(); // Get user input and trim whitespace
+    if (userInput) { // Only proceed if there's input
+      displayUserInput(userInput); // Display user input in the terminal
+      this.value = ''; // Clear the input field
+      setTimeout(() => {
+        generateBatmanResponse(userInput); // Generate Batman response based on user input
+      }, 500); // Simulate thinking time
+    }
+  }
 });
 
 // Function to display user's input in the terminal
