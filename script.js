@@ -1,11 +1,8 @@
-// Initial Batman messages
-// var i = 0;
-// var j = 0;
-// var speed = 100;
-// var typingIndex = 0; // For Batman response typing animation
-// var typingSpeed = 50; // Speed of Batman typing animation
+import Groq from "groq-sdk";
 
+// Initial Batman messages
 var txt = ["<?> Haven't a clue?", "<?> Let's play a game", "<?> Just me and you"];
+
 // Encapsulate variables within an object
 const chatState = {
   i: 0,
@@ -35,16 +32,15 @@ function startChat() {
 startChat();
 
 // Event listener for user input
-// Event listener for user input
 document.getElementById('batmanTalks').addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') { // Check if Enter key is pressed
-    var userInput = this.value.trim(); // Get user input and trim whitespace
-    if (userInput) { // Only proceed if there's input
-      displayUserInput(userInput); // Display user input in the terminal
-      this.value = ''; // Clear the input field
+  if (event.key === 'Enter') {
+    var userInput = this.value.trim();
+    if (userInput) {
+      displayUserInput(userInput); 
+      this.value = ''; 
       setTimeout(() => {
-        generateBatmanResponse(userInput); // Generate Batman response based on user input
-      }, 500); // Simulate thinking time
+        generateBatmanResponse(userInput); 
+      }, 500); 
     }
   }
 });
@@ -56,32 +52,27 @@ function displayUserInput(input) {
   document.getElementById('startMessage').appendChild(userMessage);
 }
 
-// var BatmanResponses = {
-//   default: ["I am Batman.", "Gotham needs me.", "Let's solve a mystery."],
-//   hello: ["Hello, friend!", "Greetings!", "Hi there!"],
-//   batman: ["I am the night.", "I'm vengeance.", "Gotham depends on me."],
-//   game: ["Let's play a riddle.", "You want to challenge me?", "I'm up for a game!"]
-// };
-
-// Function to generate and animate the Batman response typing (Also Adding a new line)
-function generateBatmanResponse(userInput) {
+// Function to generate and animate the Batman response typing
+async function generateBatmanResponse(userInput) {
   var BatmanMessage = document.createElement('p');
-  document.getElementById('startMessage').appendChild(BatmanMessage); // Append new <p> for Batman response
+  document.getElementById('startMessage').appendChild(BatmanMessage); 
   
-  // Determine the Batman's response based on keywords
-  var response = getBatmanResponse(userInput.toLowerCase());
-  typeBatmanResponse(response, BatmanMessage); // Pass the new <p> element for typing animation
+  // Get the response asynchronously
+  const response = await getBatmanResponse(userInput);
+  typeBatmanResponse(response, BatmanMessage); 
 }
 
-const groq = new Groq({ apiKey: "m3aya key bs 3aiz azbt el input w eloutput"});
+// Function to get Batman's response using the Groq API
+const groq = new Groq({ apiKey: "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"});
+async function getBatmanResponse(input) {
+  console.log(input);
 
-function getBatmanResponse(input) {
   try {
-    const chatCompletion = groq.chat.completions.create({
+    const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are the riddler in the batman movie that released in 2022 answering inputs from batman and answering with dark riddles",
+          content: "You are the Riddler in the Batman movie (2022), responding to inputs from Batman with dark riddles.",
         },
         {
           role: "user",
@@ -94,7 +85,7 @@ function getBatmanResponse(input) {
     return chatCompletion.choices[0]?.message?.content || "No response generated";
   } catch (error) {
     console.error("Error getting response:", error);
-    return "An error occurred while processing your request"; // Improved user feedback
+    return "An error occurred while processing your request"; 
   }
 }
 
@@ -104,14 +95,14 @@ function typeBatmanResponse(response, element) {
     element.innerHTML += response.charAt(chatState.typingIndex);
     chatState.typingIndex++;
     setTimeout(function() {
-      typeBatmanResponse(response, element); // Continue typing the next character
+      typeBatmanResponse(response, element); 
     }, chatState.typingSpeed);
   } else {
-    chatState.typingIndex = 0; // Reset index for the next message
+    chatState.typingIndex = 0; 
   }
 }
 
-// Function to scroll to the Batmantom of the chatbox as new messages are added
+// Function to scroll to the bottom of the chatbox as new messages are added
 function scrollToBatmantom() {
   var chatbox = document.getElementById('chatbox');
   chatbox.scrollTop = chatbox.scrollHeight;
