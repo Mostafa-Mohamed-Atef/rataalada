@@ -62,7 +62,7 @@ async function generateBatmanResponse(userInput) {
 }
 
 // Function to get Batman's response using the Groq API
-const groq = new Groq({ apiKey: "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"});
+const groq = new Groq({ apiKey: ""});
 async function getBatmanResponse(input) {
   console.log(input);
 
