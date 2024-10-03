@@ -1,29 +1,32 @@
 // Initial Batman messages
-var i = 0;
-var j = 0;
+// var i = 0;
+// var j = 0;
+// var speed = 100;
+// var typingIndex = 0; // For Batman response typing animation
+// var typingSpeed = 50; // Speed of Batman typing animation
+
 var txt = ["<?> Haven't a clue?", "<?> Let's play a game", "<?> Just me and you"];
-var speed = 100;
-var BatmanResponses = {
-  default: ["I am Batman.", "Gotham needs me.", "Let's solve a mystery."],
-  hello: ["Hello, friend!", "Greetings!", "Hi there!"],
-  batman: ["I am the night.", "I'm vengeance.", "Gotham depends on me."],
-  game: ["Let's play a riddle.", "You want to challenge me?", "I'm up for a game!"]
+// Encapsulate variables within an object
+const chatState = {
+  i: 0,
+  j: 0,
+  typingIndex: 0,
+  speed: 100,
+  typingSpeed: 50,
 };
-var typingIndex = 0; // For Batman response typing animation
-var typingSpeed = 25; // Speed of Batman typing animation
 
 // Function to start the initial Batman chat
 function startChat() {
-  if (j < txt.length) {
-    if (i < txt[j].length) {
-      document.getElementById("startMessage").innerHTML += txt[j].charAt(i);
-      i++;
-      setTimeout(startChat, speed);
+  if (chatState.j < txt.length) {
+    if (chatState.i < txt[chatState.j].length) {
+      document.getElementById("startMessage").innerHTML += txt[chatState.j].charAt(chatState.i);
+      chatState.i++;
+      setTimeout(startChat, chatState.speed);
     } else {
       document.getElementById("startMessage").innerHTML += "<br>";
-      j++;
-      i = 0;
-      setTimeout(startChat, speed);
+      chatState.j++;
+      chatState.i = 0;
+      setTimeout(startChat, chatState.speed);
     }
   }
 }
@@ -32,14 +35,13 @@ function startChat() {
 startChat();
 
 // Event listener for user input
-document.getElementById('batmanTalks').addEventListener('change', function() {
+document.getElementById('batmanTalks').addEventListener('input', function() { // Changed 'change' to 'input'
   var userInput = this.value; // Get user input
   displayUserInput(userInput); // Display user input in the terminal
   this.value = ''; // Clear the input field
   setTimeout(() => {
     generateBatmanResponse(userInput); // Generate Batman response based on user input
-  }, 500); //**el 500 deh m3naha 0.5 seconds kda y3ny my5lesh el Batman ytklm we akno byfkr (for realism)**
-  scrollToBatmantom(); // Scroll chat to the Batmantom
+  }, 500); // Simulate thinking time
 });
 
 // Function to display user's input in the terminal
@@ -48,6 +50,13 @@ function displayUserInput(input) {
   userMessage.textContent = '> ' + input;
   document.getElementById('startMessage').appendChild(userMessage);
 }
+
+// var BatmanResponses = {
+//   default: ["I am Batman.", "Gotham needs me.", "Let's solve a mystery."],
+//   hello: ["Hello, friend!", "Greetings!", "Hi there!"],
+//   batman: ["I am the night.", "I'm vengeance.", "Gotham depends on me."],
+//   game: ["Let's play a riddle.", "You want to challenge me?", "I'm up for a game!"]
+// };
 
 // Function to generate and animate the Batman response typing (Also Adding a new line)
 function generateBatmanResponse(userInput) {
@@ -59,29 +68,41 @@ function generateBatmanResponse(userInput) {
   typeBatmanResponse(response, BatmanMessage); // Pass the new <p> element for typing animation
 }
 
-// Function to select a response based on user input
+const groq = new Groq({ apiKey: "m3aya key bs 3aiz azbt el input w eloutput"});
+
 function getBatmanResponse(input) {
-  if (input.includes('hello')) {
-    return BatmanResponses.hello[Math.floor(Math.random() * BatmanResponses.hello.length)];
-  } else if (input.includes('batman')) {
-    return BatmanResponses.batman[Math.floor(Math.random() * BatmanResponses.batman.length)];
-  } else if (input.includes('game')) {
-    return BatmanResponses.game[Math.floor(Math.random() * BatmanResponses.game.length)];
-  } else {
-    return BatmanResponses.default[Math.floor(Math.random() * BatmanResponses.default.length)];
+  try {
+    const chatCompletion = groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: "You are the riddler in the batman movie that released in 2022 answering inputs from batman and answering with dark riddles",
+        },
+        {
+          role: "user",
+          content: input,
+        },
+      ],
+      model: "llama3-8b-8192",
+    });
+
+    return chatCompletion.choices[0]?.message?.content || "No response generated";
+  } catch (error) {
+    console.error("Error getting response:", error);
+    return "An error occurred while processing your request"; // Improved user feedback
   }
 }
 
 // Function to type out the Batman's response character by character
 function typeBatmanResponse(response, element) {
-  if (typingIndex < response.length) {
-    element.innerHTML += response.charAt(typingIndex);
-    typingIndex++;
+  if (chatState.typingIndex < response.length) {
+    element.innerHTML += response.charAt(chatState.typingIndex);
+    chatState.typingIndex++;
     setTimeout(function() {
       typeBatmanResponse(response, element); // Continue typing the next character
-    }, typingSpeed);
+    }, chatState.typingSpeed);
   } else {
-    typingIndex = 0; // Reset index for the next message
+    chatState.typingIndex = 0; // Reset index for the next message
   }
 }
 
