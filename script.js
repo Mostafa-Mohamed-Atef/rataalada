@@ -1,3 +1,5 @@
+import { ChatGroq } from "@langchain/groq";
+
 // Initial Batman messages
 // var i = 0;
 // var j = 0;
@@ -57,10 +59,10 @@ function displayUserInput(input) {
 }
 
 // var BatmanResponses = {
-//   default: ["I am Batman.", "Gotham needs me.", "Let's solve a mystery."],
-//   hello: ["Hello, friend!", "Greetings!", "Hi there!"],
-//   batman: ["I am the night.", "I'm vengeance.", "Gotham depends on me."],
-//   game: ["Let's play a riddle.", "You want to challenge me?", "I'm up for a game!"]
+  //   default: ["I am Batman.", "Gotham needs me.", "Let's solve a mystery."],
+  //   hello: ["Hello, friend!", "Greetings!", "Hi there!"],
+  //   batman: ["I am the night.", "I'm vengeance.", "Gotham depends on me."],
+  //   game: ["Let's play a riddle.", "You want to challenge me?", "I'm up for a game!"]
 // };
 
 // Function to generate and animate the Batman response typing (Also Adding a new line)
@@ -73,7 +75,17 @@ function generateBatmanResponse(userInput) {
   typeBatmanResponse(response, BatmanMessage); // Pass the new <p> element for typing animation
 }
 
-const groq = new Groq({ apiKey: "m3aya key bs 3aiz azbt el input w eloutput"});
+const llm = new ChatGroq({
+  model: "mixtral-8x7b-32768",
+  temperature: 0
+});
+
+await llm.invoke([
+  { role: "user", content: "Hi! I'm Bob" },
+  { role: "assistant", content: "Hello Bob! How can I assist you today?" },
+  { role: "user", content: "What's my name?" },
+]);
+const groq = new Groq({ apiKey: ""});
 
 function getBatmanResponse(input) {
   try {
